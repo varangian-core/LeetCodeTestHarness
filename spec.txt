@@ -1,0 +1,25 @@
+
+
+//Generate a node-based automation
+//Chainlink the automation in package.json
+
+
+//Step 1. Loading of the Problem
+problem buffer is add to problem.txt
+
+first line of the problem buffer becomes the problem directory, by splitting on . and generating a .js file
+
+parallel paths  ->
+    src/<problem number>/<problem name>.js
+    test/<problem number>/<problem name>.js //Check what jest requires here
+
+//Step 2. Generating test buffers
+Buffer is parsed for flags like Explanation, Example, Input and Output
+
+//Step 3. We use a template object that handles the generic through inferred typing.
+//Once we read in the input/output, we infer it's type based on lexicographic triggers, and then we generate the template test
+
+
+
+
+

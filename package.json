@@ -1,0 +1,21 @@
+{
+  "name": "leetcode_ts",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest",
+    "load": "ts-node .\\automation\\loader.ts",
+    "check": "ts-node .\\automation\\bufferTest.ts",
+    "extract": "ts-node .\\automation\\extractContent.ts"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/jest": "^29.5.1",
+    "@types/node": "^18.16.0",
+    "jest": "^29.5.0",
+    "ts-jest": "^29.1.0"
+  }
+}

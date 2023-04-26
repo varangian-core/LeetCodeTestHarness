@@ -23,7 +23,18 @@ const createFiles = (problemNumber: string, problemName: string): void => {
         fs.mkdirSync(testDir);
     }
 
-    fs.writeFileSync(srcFile, '');
+    const structuresDir = path.join('.', 'structures');
+    const structureFiles = fs.readdirSync(structuresDir);
+    let importStatements = '';
+
+    structureFiles.forEach(file => {
+        if (file.endsWith('.ts')) {
+            const fileName = file.replace('.ts', '');
+            importStatements += `import { ${fileName} } from '../../structures/${fileName}';\n`;
+        }
+    });
+
+    fs.writeFileSync(srcFile, importStatements);
     fs.writeFileSync(testFile, '');
 }
 
@@ -51,8 +62,6 @@ const readProblemInfo = (): { problemName: string, examples: Array<any> } => {
 
     console.log('Input content:', inputContent);
     console.log('Output content:', outputContent);
-
-    //lets  zip the input and output content
     const examples = inputContent.map((input, index) => [input, outputContent[index]]);
     console.log('Examples:', examples);
 
@@ -60,11 +69,39 @@ const readProblemInfo = (): { problemName: string, examples: Array<any> } => {
 }
 
 const createJestTestCases = (
-    //Add substitution from digit to work (i.e. 3Sum -> threeSum)
     problemName: string,
     problemNumber: string,
     examples: Array<[string, string]>
 ): string => {
+    problemName = problemName.replace(/\d/, (digit, index) => {
+        const isDigitFirstChar = index === 0;
+
+        switch (digit) {
+            case '0':
+                return isDigitFirstChar ? 'zero' : 'Zero';
+            case '1':
+                return isDigitFirstChar ? 'one' : 'One';
+            case '2':
+                return isDigitFirstChar ? 'two' : 'Two';
+            case '3':
+                return isDigitFirstChar ? 'three' : 'Three';
+            case '4':
+                return isDigitFirstChar ? 'four' : 'Four';
+            case '5':
+                return isDigitFirstChar ? 'five' : 'Five';
+            case '6':
+                return isDigitFirstChar ? 'six' : 'Six';
+            case '7':
+                return isDigitFirstChar ? 'seven' : 'Seven';
+            case '8':
+                return isDigitFirstChar ? 'eight' : 'Eight';
+            case '9':
+                return isDigitFirstChar ? 'nine' : 'Nine';
+            default:
+                return '';
+        }
+    });
+
     const importStatement = `import { ${problemName} } from "../../../src/${problemNumber}/${problemName}";\n\n`;
     let testCases = importStatement;
 

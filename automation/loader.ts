@@ -24,7 +24,7 @@ const createFiles = (problemNumber: string, problemName: string): void => {
     }
 
     fs.writeFileSync(srcFile, '');
-    fs.writeFileSync(testFile, 'Test file content');
+    fs.writeFileSync(testFile, '');
 }
 
 const sanitize = (str: string): string => {
@@ -59,27 +59,35 @@ const readProblemInfo = (): { problemName: string, examples: Array<any> } => {
     return { problemName, 'examples': examples };
 }
 
-const createJestTestCases = (problemName: string, inputContent: string[], outputContent: any[]): string => {
-    let testCases = `import { ${problemName} } from './${problemName}';\n\n`;
+const createJestTestCases = (
+    //Add substitution from digit to work (i.e. 3Sum -> threeSum)
+    problemName: string,
+    problemNumber: string,
+    examples: Array<[string, string]>
+): string => {
+    const importStatement = `import { ${problemName} } from "../../../src/${problemNumber}/${problemName}";\n\n`;
+    let testCases = importStatement;
 
-    inputContent.forEach((input, index) => {
-        const output = outputContent[index];
+    examples.forEach(([input, output], index) => {
+        const inputValues = input
+            .replace(/(\w+)\s*=\s*/g, '')
+            .split(',')
+            .map(val => val.trim());
+        const expectedOutput = (output === 'true' || output === 'false') ? output : JSON.stringify(output);
+
         testCases += `test('${problemName} Test Case ${index + 1}', () => {\n`;
-        testCases += `  expect(${problemName}(${input})).toBe(${output});\n`;
+        testCases += `  expect(${problemName}(${inputValues.join(',')})).toBe(${expectedOutput});\n`;
         testCases += `});\n\n`;
     });
 
     return testCases;
-}
+};
 
-const appendExamplesToTestFile = (testFile: string, problemName: string, examples: Array<any>) => {
-    let testContent = fs.readFileSync(testFile, 'utf-8');
-    const inputContent = examples.map(([input, output]) => input);
-    const outputContent = examples.map(([input, output]) => output);
-    const testCases = createJestTestCases(problemName, inputContent, outputContent);
-    testContent += testCases;
 
-    fs.writeFileSync(testFile, testContent);
+
+const appendExamplesToTestFile = (testFile: string, problemName: string, problemNumber: string, examples: Array<[string, any]>) => {
+    const testCases = createJestTestCases(problemName, problemNumber, examples);
+    fs.writeFileSync(testFile, testCases);
 }
 
 
@@ -103,7 +111,7 @@ function main() {
     const testDir = path.join('test', '__tests__', problemNumber);
     const testFile = path.join(testDir, `${sanitizedProblemName}.spec.ts`);
     const { examples } = readProblemInfo();
-    appendExamplesToTestFile(testFile, sanitizedProblemName, examples);
+    appendExamplesToTestFile(testFile, sanitizedProblemName, problemNumber, examples);
 }
 
 main();

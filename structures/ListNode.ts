@@ -1,7 +1,6 @@
 export class ListNode {
 
 
-    //Need a parsing adapter here
     val : number;
     next : ListNode | null;
 

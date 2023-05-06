@@ -110,10 +110,10 @@ const createJestTestCases = (
             .replace(/(\w+)\s*=\s*/g, '')
             .split(',')
             .map(val => val.trim());
-        const expectedOutput = (output === 'true' || output === 'false') ? output : JSON.stringify(output);
+        const expectedOutput = (output === 'true' || output === 'false') ? output : output;
 
         testCases += `test('${problemName} Test Case ${index + 1}', () => {\n`;
-        testCases += `  expect(${problemName}(${inputValues.join(',')})).toBe(${expectedOutput});\n`;
+        testCases += `  expect(${problemName}(${inputValues.join(',')})).toStrictEqual(${expectedOutput});\n`;
         testCases += `});\n\n`;
     });
 

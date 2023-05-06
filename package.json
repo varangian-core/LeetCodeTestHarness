@@ -8,7 +8,8 @@
     "load": "ts-node .\\automation\\loader.ts",
     "check": "ts-node .\\automation\\bufferTest.ts",
     "extract": "ts-node .\\automation\\extractContent.ts",
-    "publish": "ts-node .\\automation\\publish.ts"
+    "publish": "ts-node .\\automation\\publish.ts",
+    "timer" : "ts-node .\\automation\\timer.ts"
   },
   "keywords": [],
   "author": "",

@@ -20,6 +20,10 @@ Buffer is parsed for flags like Explanation, Example, Input and Output
 //Once we read in the input/output, we infer it's type based on lexicographic triggers, and then we generate the template test
 
 
+//Tentative list;
+//ListNode / TreeNode serialization helpers
 
+
+//Need to add problemConfig generation after npm run load
 
 
